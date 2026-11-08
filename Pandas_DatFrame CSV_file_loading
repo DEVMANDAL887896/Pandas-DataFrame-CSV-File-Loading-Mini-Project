@@ -1,0 +1,1239 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "id": "7b41e205-3dfb-47dc-8e68-308091d62a8b",
+   "metadata": {
+    "scrolled": true
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "   order_id  customer_id  order_date     status\n",
+      "0      1001          101  2026-01-05  Delivered\n",
+      "1      1002          102  2026-01-08  Delivered\n",
+      "2      1003          101  2026-01-15  Cancelled\n",
+      "3      1004          103  2026-02-02  Delivered\n",
+      "4      1005          104  2026-02-10  Delivered\n",
+      "5      1006          102  2026-02-18   Returned\n",
+      "6      1007          105  2026-02-20  Delivered\n",
+      "7      1008          103  2026-03-01  Delivered\n",
+      "8      1009          101  2026-03-05  Delivered\n"
+     ]
+    }
+   ],
+   "source": [
+    "import pandas as pd\n",
+    "df = pd.read_csv(\"orders.csv\")\n",
+    "print(df)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "id": "b32752b8-2871-4121-a68b-78b0369aab04",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "   order_id  customer_id  order_date     status\n",
+      "0      1001          101  2026-01-05  Delivered\n",
+      "1      1002          102  2026-01-08  Delivered\n",
+      "2      1003          101  2026-01-15  Cancelled\n"
+     ]
+    }
+   ],
+   "source": [
+    "#top 3 rows\n",
+    "print(df.head(3))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "id": "9a483b64-a4e4-44af-924e-b83968201cd5",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Index(['order_id', 'customer_id', 'order_date', 'status'], dtype='object')\n"
+     ]
+    }
+   ],
+   "source": [
+    "#columns name\n",
+    "print(df.columns)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "id": "880b17d3-9390-4b1d-b38a-9dd8046fcd79",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "(9, 4)\n"
+     ]
+    }
+   ],
+   "source": [
+    "#DataFrame Dimension\n",
+    "print(df.shape)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "id": "ff7468b6-003d-4d72-8ef8-05b8c8fcbcd0",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "order_id        int64\n",
+      "customer_id     int64\n",
+      "order_date     object\n",
+      "status         object\n",
+      "dtype: object\n"
+     ]
+    }
+   ],
+   "source": [
+    "#check Datatypes\n",
+    "print(df.dtypes)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "id": "1c45078e-425f-4bae-bc0d-8ffbf32a8896",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#chnage datatype order_date to to_datetime\n",
+    "df[\"order_date\"] = pd.to_datetime(df[\"order_date\"])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "id": "a6281b3d-3514-4067-94ca-1fdb6f30d1a4",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "order_id                int64\n",
+      "customer_id             int64\n",
+      "order_date     datetime64[ns]\n",
+      "status                 object\n",
+      "dtype: object\n"
+     ]
+    }
+   ],
+   "source": [
+    "#now all set \n",
+    "print(df.dtypes)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "id": "e4d2486a-6e67-4b87-9d95-1d2ee4e3618f",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Delivered    7\n",
+       "Cancelled    1\n",
+       "Returned     1\n",
+       "Name: status, dtype: int64"
+      ]
+     },
+     "execution_count": 23,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "#count of Order_status\n",
+    "df[\"status\"].value_counts()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 24,
+   "id": "30bd53fb-e40a-498d-8308-fce018beca39",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "1001    1\n",
+       "1002    1\n",
+       "1003    1\n",
+       "1004    1\n",
+       "1005    1\n",
+       "1006    1\n",
+       "1007    1\n",
+       "1008    1\n",
+       "1009    1\n",
+       "Name: order_id, dtype: int64"
+      ]
+     },
+     "execution_count": 24,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "#checking all order_id\n",
+    "df[\"order_id\"].value_counts()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 31,
+   "id": "d517dbe6-d6e6-4050-a0a8-ae53224a2f24",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "7"
+      ]
+     },
+     "execution_count": 31,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# count of Delivered Status\n",
+    "(df[\"status\"] == \"Delivered\").sum()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 32,
+   "id": "b17ca623-7e03-4708-8e56-b6d08a2d7a8e",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "1"
+      ]
+     },
+     "execution_count": 32,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# count of Cancelled Orders\n",
+    "(df[\"status\"]==\"Cancelled\").sum()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 34,
+   "id": "79f6d725-1e84-47e8-bd2b-e46675a90ef2",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "77.77777777777779\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Delivered_orders%\n",
+    "total_orders = len(df)\n",
+    "delivered_orders = (df[\"status\"]==\"Delivered\").sum()\n",
+    "delivered_orders_percentage = (delivered_orders/total_orders)*100\n",
+    "print(delivered_orders_percentage)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 36,
+   "id": "9495175f-a13c-4c56-89d5-c2c8c9f8ced9",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "11.11111111111111\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Cancelled Orders%\n",
+    "total_orders = len(df)\n",
+    "cancelled_orders = (df[\"status\"]==\"Cancelled\").sum()\n",
+    "cancelled_orders_percentage = (cancelled_orders/total_orders)*100\n",
+    "print(cancelled_orders_percentage)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 37,
+   "id": "1bd7da52-bf8a-4209-b073-c19c3bebc2b0",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "11.11111111111111\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Returned Orders%\n",
+    "total_orders = len(df)\n",
+    "Returned_orders = (df[\"status\"]==\"Returned\").sum()\n",
+    "Returned_orders_percentage = (Returned_orders/total_orders)*100\n",
+    "print(Returned_orders_percentage)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 38,
+   "id": "dbafcc3f-14e5-4150-8359-26b9fcacb665",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Delivered    7\n",
+      "Cancelled    1\n",
+      "Returned     1\n",
+      "Name: status, dtype: int64\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Status Counts\n",
+    "print(df[\"status\"].value_counts())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 39,
+   "id": "2996c61b-26b3-4f63-b117-cac4b4d59e1f",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "order_id       0\n",
+      "customer_id    0\n",
+      "order_date     0\n",
+      "status         0\n",
+      "dtype: int64\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Checking Null Values\n",
+    "print(df.isnull().sum())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 40,
+   "id": "9db21790-4cbf-48c8-a1b2-db68bc2736c1",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "0\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Checking Duplicated Values\n",
+    "print(df.duplicated().sum())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 41,
+   "id": "b35d9ff0-bf3b-4df9-b3f6-99b01257258d",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>order_id</th>\n",
+       "      <th>customer_id</th>\n",
+       "      <th>order_date</th>\n",
+       "      <th>status</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>8</th>\n",
+       "      <td>1009</td>\n",
+       "      <td>101</td>\n",
+       "      <td>2026-03-05</td>\n",
+       "      <td>Delivered</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>7</th>\n",
+       "      <td>1008</td>\n",
+       "      <td>103</td>\n",
+       "      <td>2026-03-01</td>\n",
+       "      <td>Delivered</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>6</th>\n",
+       "      <td>1007</td>\n",
+       "      <td>105</td>\n",
+       "      <td>2026-02-20</td>\n",
+       "      <td>Delivered</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>5</th>\n",
+       "      <td>1006</td>\n",
+       "      <td>102</td>\n",
+       "      <td>2026-02-18</td>\n",
+       "      <td>Returned</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>1005</td>\n",
+       "      <td>104</td>\n",
+       "      <td>2026-02-10</td>\n",
+       "      <td>Delivered</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>1004</td>\n",
+       "      <td>103</td>\n",
+       "      <td>2026-02-02</td>\n",
+       "      <td>Delivered</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>1003</td>\n",
+       "      <td>101</td>\n",
+       "      <td>2026-01-15</td>\n",
+       "      <td>Cancelled</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>1002</td>\n",
+       "      <td>102</td>\n",
+       "      <td>2026-01-08</td>\n",
+       "      <td>Delivered</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>1001</td>\n",
+       "      <td>101</td>\n",
+       "      <td>2026-01-05</td>\n",
+       "      <td>Delivered</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   order_id  customer_id order_date     status\n",
+       "8      1009          101 2026-03-05  Delivered\n",
+       "7      1008          103 2026-03-01  Delivered\n",
+       "6      1007          105 2026-02-20  Delivered\n",
+       "5      1006          102 2026-02-18   Returned\n",
+       "4      1005          104 2026-02-10  Delivered\n",
+       "3      1004          103 2026-02-02  Delivered\n",
+       "2      1003          101 2026-01-15  Cancelled\n",
+       "1      1002          102 2026-01-08  Delivered\n",
+       "0      1001          101 2026-01-05  Delivered"
+      ]
+     },
+     "execution_count": 41,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Sort values by order_id Descending\n",
+    "df.sort_values(by=\"order_date\",ascending=False)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 42,
+   "id": "25f917f9-9bc3-41f9-9e4e-372c4f3bb3d8",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Delivered    7\n",
+       "Cancelled    1\n",
+       "Returned     1\n",
+       "Name: status, dtype: int64"
+      ]
+     },
+     "execution_count": 42,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Status Counts\n",
+    "df[\"status\"].value_counts()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 44,
+   "id": "4513f42a-ff8e-474b-8b45-35d507e8c098",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "1"
+      ]
+     },
+     "execution_count": 44,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Cancelled_orders Counts\n",
+    "(df[\"status\"]==\"Cancelled\").sum()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 45,
+   "id": "2d10459f-7ede-40c7-8846-e688eab99883",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "7"
+      ]
+     },
+     "execution_count": 45,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Delivered Orders Counts\n",
+    "(df[\"status\"]==\"Delivered\").sum()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 47,
+   "id": "8f34b726-bef9-43c6-9ccc-658d6c402a59",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>order_id</th>\n",
+       "      <th>customer_id</th>\n",
+       "      <th>order_date</th>\n",
+       "      <th>status</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>1001</td>\n",
+       "      <td>101</td>\n",
+       "      <td>2026-01-05</td>\n",
+       "      <td>Delivered</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>1002</td>\n",
+       "      <td>102</td>\n",
+       "      <td>2026-01-08</td>\n",
+       "      <td>Delivered</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>1003</td>\n",
+       "      <td>101</td>\n",
+       "      <td>2026-01-15</td>\n",
+       "      <td>Cancelled</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>1004</td>\n",
+       "      <td>103</td>\n",
+       "      <td>2026-02-02</td>\n",
+       "      <td>Delivered</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>1005</td>\n",
+       "      <td>104</td>\n",
+       "      <td>2026-02-10</td>\n",
+       "      <td>Delivered</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>5</th>\n",
+       "      <td>1006</td>\n",
+       "      <td>102</td>\n",
+       "      <td>2026-02-18</td>\n",
+       "      <td>Returned</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>6</th>\n",
+       "      <td>1007</td>\n",
+       "      <td>105</td>\n",
+       "      <td>2026-02-20</td>\n",
+       "      <td>Delivered</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>7</th>\n",
+       "      <td>1008</td>\n",
+       "      <td>103</td>\n",
+       "      <td>2026-03-01</td>\n",
+       "      <td>Delivered</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>8</th>\n",
+       "      <td>1009</td>\n",
+       "      <td>101</td>\n",
+       "      <td>2026-03-05</td>\n",
+       "      <td>Delivered</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   order_id  customer_id order_date     status\n",
+       "0      1001          101 2026-01-05  Delivered\n",
+       "1      1002          102 2026-01-08  Delivered\n",
+       "2      1003          101 2026-01-15  Cancelled\n",
+       "3      1004          103 2026-02-02  Delivered\n",
+       "4      1005          104 2026-02-10  Delivered\n",
+       "5      1006          102 2026-02-18   Returned\n",
+       "6      1007          105 2026-02-20  Delivered\n",
+       "7      1008          103 2026-03-01  Delivered\n",
+       "8      1009          101 2026-03-05  Delivered"
+      ]
+     },
+     "execution_count": 47,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Sort_values by Order_id Descending\n",
+    "df.sort_values(by=\"order_id\",ascending=True)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 48,
+   "id": "b2cbc1e7-330b-40d4-b8fb-b24751bf8486",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "9045\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Total_value Of order_id\n",
+    "print(df[\"order_id\"].sum())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 51,
+   "id": "71252bbd-84f0-4a09-a5ff-d566667ad680",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>order_id</th>\n",
+       "      <th>customer_id</th>\n",
+       "      <th>order_date</th>\n",
+       "      <th>status</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>1003</td>\n",
+       "      <td>101</td>\n",
+       "      <td>2026-01-15</td>\n",
+       "      <td>Cancelled</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>1004</td>\n",
+       "      <td>103</td>\n",
+       "      <td>2026-02-02</td>\n",
+       "      <td>Delivered</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>1005</td>\n",
+       "      <td>104</td>\n",
+       "      <td>2026-02-10</td>\n",
+       "      <td>Delivered</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>5</th>\n",
+       "      <td>1006</td>\n",
+       "      <td>102</td>\n",
+       "      <td>2026-02-18</td>\n",
+       "      <td>Returned</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>6</th>\n",
+       "      <td>1007</td>\n",
+       "      <td>105</td>\n",
+       "      <td>2026-02-20</td>\n",
+       "      <td>Delivered</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>7</th>\n",
+       "      <td>1008</td>\n",
+       "      <td>103</td>\n",
+       "      <td>2026-03-01</td>\n",
+       "      <td>Delivered</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>8</th>\n",
+       "      <td>1009</td>\n",
+       "      <td>101</td>\n",
+       "      <td>2026-03-05</td>\n",
+       "      <td>Delivered</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   order_id  customer_id order_date     status\n",
+       "2      1003          101 2026-01-15  Cancelled\n",
+       "3      1004          103 2026-02-02  Delivered\n",
+       "4      1005          104 2026-02-10  Delivered\n",
+       "5      1006          102 2026-02-18   Returned\n",
+       "6      1007          105 2026-02-20  Delivered\n",
+       "7      1008          103 2026-03-01  Delivered\n",
+       "8      1009          101 2026-03-05  Delivered"
+      ]
+     },
+     "execution_count": 51,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# filter order_id > 1002\n",
+    "df[df[\"order_id\"]>1002]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 53,
+   "id": "ab9d76ec-1f8f-48c0-9348-e882f860ac6d",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>order_id</th>\n",
+       "      <th>customer_id</th>\n",
+       "      <th>order_date</th>\n",
+       "      <th>status</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>1001</td>\n",
+       "      <td>101</td>\n",
+       "      <td>2026-01-05</td>\n",
+       "      <td>Delivered</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   order_id  customer_id order_date     status\n",
+       "0      1001          101 2026-01-05  Delivered"
+      ]
+     },
+     "execution_count": 53,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# order_id = 1001\n",
+    "df[df[\"order_id\"]==1001]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 59,
+   "id": "7a24ef0a-3c8c-4f00-ba8d-cfd5042bde31",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>customer_id</th>\n",
+       "      <th>status</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>104</td>\n",
+       "      <td>Delivered</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   customer_id     status\n",
+       "4          104  Delivered"
+      ]
+     },
+     "execution_count": 59,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# multipule filtering\n",
+    "df.loc[df[\"order_id\"]==1005, [\"customer_id\",\"status\"]]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 63,
+   "id": "90ddd00f-bde4-4bf3-9109-d1a7dc306989",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>order_id</th>\n",
+       "      <th>customer_id</th>\n",
+       "      <th>order_date</th>\n",
+       "      <th>status</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>6</th>\n",
+       "      <td>1007</td>\n",
+       "      <td>105</td>\n",
+       "      <td>2026-02-20</td>\n",
+       "      <td>Delivered</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>7</th>\n",
+       "      <td>1008</td>\n",
+       "      <td>103</td>\n",
+       "      <td>2026-03-01</td>\n",
+       "      <td>Delivered</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>8</th>\n",
+       "      <td>1009</td>\n",
+       "      <td>101</td>\n",
+       "      <td>2026-03-05</td>\n",
+       "      <td>Delivered</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   order_id  customer_id order_date     status\n",
+       "6      1007          105 2026-02-20  Delivered\n",
+       "7      1008          103 2026-03-01  Delivered\n",
+       "8      1009          101 2026-03-05  Delivered"
+      ]
+     },
+     "execution_count": 63,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# multipule data filtering\n",
+    "df[(df[\"status\"] == \"Delivered\") & (df[\"order_id\"] > 1005)]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 65,
+   "id": "a47161dd-7d10-4264-8446-9ff1ff561278",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>order_id</th>\n",
+       "      <th>customer_id</th>\n",
+       "      <th>order_date</th>\n",
+       "      <th>status</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "Empty DataFrame\n",
+       "Columns: [order_id, customer_id, order_date, status]\n",
+       "Index: []"
+      ]
+     },
+     "execution_count": 65,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# filter with & opreator\n",
+    "df[(df[\"status\"]==\"Delieverd\") & (df[\"order_id\"]>1007)]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 66,
+   "id": "24cf3cf4-26c4-4e7d-a1ed-86814bc545d5",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>order_id</th>\n",
+       "      <th>customer_id</th>\n",
+       "      <th>order_date</th>\n",
+       "      <th>status</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>1003</td>\n",
+       "      <td>101</td>\n",
+       "      <td>2026-01-15</td>\n",
+       "      <td>Cancelled</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   order_id  customer_id order_date     status\n",
+       "2      1003          101 2026-01-15  Cancelled"
+      ]
+     },
+     "execution_count": 66,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# filtering with & opreator\n",
+    "df[(df[\"status\"]==\"Cancelled\") & (df[\"order_id\"]>1001)]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "id": "066cefd2-0b3a-4526-ac5d-b92a4f095992",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "7"
+      ]
+     },
+     "execution_count": 11,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Delivered Orders Counts\n",
+    "(df[\"status\"]==\"Delivered\").sum()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "id": "a65a9352-bb3f-42cf-af4d-cb32a3c1ff16",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "1001    1\n",
+       "1002    1\n",
+       "1003    1\n",
+       "1004    1\n",
+       "1005    1\n",
+       "1006    1\n",
+       "1007    1\n",
+       "1008    1\n",
+       "1009    1\n",
+       "Name: order_id, dtype: int64"
+      ]
+     },
+     "execution_count": 12,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "(df[\"order_id\"].value_counts())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "id": "814fa69e-7945-43b6-b0d8-f65d18db5274",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "   order_id  customer_id  order_date     status\n",
+      "0      1001          101  2026-01-05  Delivered\n",
+      "1      1002          102  2026-01-08  Delivered\n",
+      "3      1004          103  2026-02-02  Delivered\n",
+      "4      1005          104  2026-02-10  Delivered\n",
+      "6      1007          105  2026-02-20  Delivered\n",
+      "7      1008          103  2026-03-01  Delivered\n",
+      "8      1009          101  2026-03-05  Delivered\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Delivered Status \n",
+    "print(df[df[\"status\"]==\"Delivered\"])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "4622aff3-0087-450e-aee3-f0f8f2ef7885",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "anaconda-2022.05-py39",
+   "language": "python",
+   "name": "conda-env-anaconda-2022.05-py39-py"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.9.12"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
